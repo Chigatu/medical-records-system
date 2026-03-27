@@ -1,6 +1,8 @@
 services:
   medical-api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: medical-records-api
     ports:
       - "8080:8080"

@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     libpoco-dev \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Копирование исходного кода
@@ -18,8 +17,8 @@ RUN mkdir build && cd build && \
     cmake .. && \
     make -j4
 
-# Копируем web файлы в build директорию для последующего копирования
-RUN cp -r web build/
+# Копируем web файлы в build директорию (важно!)
+RUN cp -r ../web build/ 2>/dev/null || cp -r web build/
 
 # Финальный образ
 FROM ubuntu:22.04
@@ -34,6 +33,9 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY --from=builder /app/build/medical_api .
 COPY --from=builder /app/build/web ./web
+
+# Проверяем наличие файлов
+RUN ls -la ./web/ && ls -la ./web/docs/ && ls -la ./web/swagger/ || true
 
 # Открываем порт
 EXPOSE 8080
