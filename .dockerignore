@@ -1,0 +1,8 @@
+build/
+.git/
+*.md
+*.sh
+*.log
+.DS_Store
+.vscode/
+.idea/
